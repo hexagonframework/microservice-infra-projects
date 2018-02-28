@@ -1,0 +1,8 @@
+spring:
+  boot:
+    admin:
+      routes:
+        endpoints: env,metrics,trace,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,loggers,auditevents,hystrix.stream,activiti
+      turbine:
+        clusters: default
+        location: turbine-server

@@ -1,0 +1,55 @@
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
+
+management:
+  context-path: /management
+  security:
+    enabled: true
+
+logging:
+  level:
+    org.springframework.security: INFO
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://127.0.0.1:8080/uaa/users/current
+  user:
+    name: actuator
+    password: actuator1@3$
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    statusPageUrlPath: ${management.context-path}/info
+    healthCheckUrlPath: ${management.context-path}/health
+    leaseRenewalIntervalInSeconds: 5
+    metadata-map:
+      instanceId: ${spring.application.name}:${random.value}
+      management.context-path: ${management.context-path}
+      user.name: ${security.user.name}
+      user.password: ${security.user.password}
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
+
+spring:
+  data:
+    mongodb:
+      host: 192.168.1.177
+      authentication-database: admin
+      port: 27017
+      username: jkgj-mongo
+      password: test1@3$
