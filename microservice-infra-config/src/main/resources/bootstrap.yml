@@ -1,0 +1,33 @@
+info:
+  component: Config Center
+
+server:
+  port: 8400
+
+endpoints:
+  health:
+    sensitive: false
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+
+security:
+  user:
+    name: configuser
+    password: Jkgj1@3$
+
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: ${config.mode}
+#  cloud:
+#    zookeeper:
+#      connectString: ${zookeeper.host:localhost}:${zookeeper.port:2181}
+#      discovery:
+#        metadata:
+#          user:
+#            name: ${security.user.name}
+#            password: ${security.user.password}
+#        preferIpAddress: true

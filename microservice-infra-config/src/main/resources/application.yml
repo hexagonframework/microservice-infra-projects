@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://git.oschina.net/skykingkong/config-resources.git
+          username: ittester@9khealthy.com
+          password: qwer1@3$
+        native:
+          search-locations: "file:${user.home}/config-resources"
