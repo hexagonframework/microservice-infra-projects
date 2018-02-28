@@ -1,0 +1,28 @@
+info:
+  component: Gateway Server
+
+spring:
+  application:
+    name: gateway-server
+  cloud:
+    config:
+      uri: http://114.55.143.174:8400
+      fail-fast: true
+      username: configuser
+      password: Jkgj1@3$
+      profile: ${spring.profiles.active}
+
+  # 自定义404、500异常
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  jackson:
+    locale: en_US
+    date-format: EEE, d MMM yyyy HH:mm:ss 'GMT'Z
+    time-zone: GMT+8
+
+#netflix:
+#  atlas:
+#    uri: http://127.0.0.1:7101/api/v1/publish/
+
