@@ -1,0 +1,25 @@
+info:
+  component: Service Registry Center
+
+spring:
+  application:
+    name: registry-server
+  cloud:
+    config:
+      uri: http://114.55.143.174:8400
+      fail-fast: true
+      username: configuser
+      password: Jkgj1@3$
+      profile: ${spring.profiles.active}
+logging:
+  path: ${user.home}/logs
+  level:
+    org.springframework.security: INFO
+    org.apache.zookeeper.ClientCnxn: WARN
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
