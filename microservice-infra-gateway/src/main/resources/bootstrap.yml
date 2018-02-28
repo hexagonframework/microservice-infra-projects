@@ -6,10 +6,10 @@ spring:
     name: gateway-server
   cloud:
     config:
-      uri: http://114.55.143.174:8400
+      uri: ${config.url}
       fail-fast: true
-      username: configuser
-      password: Jkgj1@3$
+      username: ${config.username}
+      password: ${config.password}
       profile: ${spring.profiles.active}
 
   # 自定义404、500异常

@@ -8,7 +8,7 @@
     <version>1.0.0.SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>Hexagonframework microservice projects POM </name>
+	<name>Microservice infra POM </name>
 	<description>Hexagon微服务基础设施平台</description>
 
     <parent>
@@ -23,7 +23,7 @@
 		<module>microservice-infra-monitor</module>
 		<module>microservice-infra-gateway</module>
         <module>microservice-infra-registry</module>
-        <module>microservice-infra-auth-service</module>
+        <module>microservice-infra-uaa-service</module>
 	</modules>
 
     <properties>

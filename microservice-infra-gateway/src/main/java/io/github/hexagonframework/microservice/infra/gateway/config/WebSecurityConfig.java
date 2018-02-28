@@ -18,7 +18,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // for gateway access
         http.antMatcher("/**").authorizeRequests()
                 .anyRequest().permitAll();
-        // for management access with basic auth
+        // for management access with basic uaa
         http.antMatcher("/management/**").authorizeRequests()
                 .antMatchers("/management/**").authenticated()
                 .and().httpBasic().realmName("Management API");

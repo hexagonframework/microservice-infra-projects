@@ -6,13 +6,12 @@ spring:
     name: monitor-server
   cloud:
     config:
-      uri: http://114.55.143.174:8400
+      uri: ${config.url}
       fail-fast: true
-      username: configuser
-      password: Jkgj1@3$
+      username: ${config.username}
+      password: ${config.password}
       profile: ${spring.profiles.active}
 logging:
   path: ${user.home}/logs
   level:
     org.springframework.security: INFO
-    org.apache.zookeeper.ClientCnxn: WARN

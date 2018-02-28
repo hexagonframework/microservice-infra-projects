@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-io.github.hexagonframework.microservice.infra.gateway.ratelimit.config.RateLimitAutoConfiguration,\
-  io.github.hexagonframework.microservice.infra.gateway.errorlimit.config.ErrorLimitAutoConfiguration

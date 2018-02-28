@@ -14,20 +14,11 @@ endpoints:
 
 security:
   user:
-    name: configuser
-    password: Jkgj1@3$
+    name: ${config.username}
+    password: ${config.password}
 
 spring:
   application:
     name: config-server
   profiles:
     active: ${config.mode}
-#  cloud:
-#    zookeeper:
-#      connectString: ${zookeeper.host:localhost}:${zookeeper.port:2181}
-#      discovery:
-#        metadata:
-#          user:
-#            name: ${security.user.name}
-#            password: ${security.user.password}
-#        preferIpAddress: true

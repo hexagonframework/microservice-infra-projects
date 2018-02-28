@@ -1,16 +1,13 @@
 info:
   component: Service Registry Center
 
+server:
+  port: 8761
+
 spring:
   application:
     name: registry-server
-  cloud:
-    config:
-      uri: http://114.55.143.174:8400
-      fail-fast: true
-      username: configuser
-      password: Jkgj1@3$
-      profile: ${spring.profiles.active}
+
 logging:
   path: ${user.home}/logs
   level:

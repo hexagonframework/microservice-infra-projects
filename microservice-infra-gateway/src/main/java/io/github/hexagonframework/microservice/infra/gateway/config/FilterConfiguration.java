@@ -1,10 +1,7 @@
 package io.github.hexagonframework.microservice.infra.gateway.config;
 
-import io.github.hexagonframework.microservice.infra.gateway.loadbalancer.HystrixLabelFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -14,11 +11,6 @@ import org.springframework.web.filter.CorsFilter;
  */
 @Configuration
 public class FilterConfiguration {
-
-    @Bean
-    public StringRedisTemplate redisTemplate(RedisConnectionFactory cf) {
-        return new StringRedisTemplate(cf);
-    }
 
     /**
      * attention:简单跨域就是GET，HEAD和POST请求，但是POST请求的"Content-Type"只能是application/x-www-form-urlencoded, multipart/form-data 或 text/plain
@@ -42,8 +34,4 @@ public class FilterConfiguration {
         return new CorsFilter(source);
     }
 
-    @Bean
-    public HystrixLabelFilter hystrixLabelFilter(StringRedisTemplate redisTemplate) {
-        return new HystrixLabelFilter(redisTemplate);
-    }
 }
