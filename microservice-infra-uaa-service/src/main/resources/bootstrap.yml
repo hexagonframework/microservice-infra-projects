@@ -1,0 +1,11 @@
+info:
+  component: uaa-service
+spring:
+  application:
+    name: uaa-service
+  cloud:
+    config:
+      uri: ${config.url}
+      fail-fast: true
+      username: ${config.username}
+      password: ${config.password}
