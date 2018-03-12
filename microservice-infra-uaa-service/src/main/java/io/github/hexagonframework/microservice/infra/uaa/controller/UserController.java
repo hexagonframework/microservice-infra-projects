@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,11 +29,12 @@ public class UserController {
 		Map<String, Object> userInfo = new HashMap<>(6);
 		userInfo.put("clientId", authentication.getOAuth2Request().getClientId());
 		userInfo.put("isClientOnly", authentication.isClientOnly());
-		userInfo.put("name", authentication.getName());
 		if (! authentication.isClientOnly()) {
-			User user = (User) authentication.getDetails();
-			userInfo.put("userId", user.getId());
-			userInfo.put("username", user.getUsername());
+			User user = (User) authentication.getUserAuthentication().getPrincipal();
+			Map<String, Object> userInfoDetail = new HashMap<>(2);
+			userInfoDetail.put("id", user.getId());
+			userInfoDetail.put("username", user.getUsername());
+			userInfo.put("user", userInfoDetail);
 		}
 		userInfo.put("authorities", authentication.getAuthorities());
 		return userInfo;
@@ -40,7 +43,9 @@ public class UserController {
 	@PreAuthorize("#oauth2.hasScope('server')")
 	@RequestMapping(method = RequestMethod.POST)
 	public void createUser(OAuth2Authentication authentication, @Valid @RequestBody User user) {
-		user.setClientId(authentication.getOAuth2Request().getClientId());
+		if (StringUtils.isEmpty(user.getClientId())) {
+			user.setClientId(authentication.getOAuth2Request().getClientId());
+		}
 		userService.create(user);
 	}
 }
