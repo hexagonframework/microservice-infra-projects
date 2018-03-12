@@ -9,7 +9,7 @@ endpoints:
 management:
   context-path: /actuator
   security:
-    enabled: true
+    enabled: false
 
 logging:
   level:
@@ -23,38 +23,21 @@ hystrix:
           thread:
             timeoutInMilliseconds: 10000
 security:
-  oauth2:
-    resource:
-      user-info-uri: http://127.0.0.1:8080/uaa/users/me
   user:
     name: actuator
     password: actuator1@3$
-
-eureka:
-  instance:
-    prefer-ip-address: true
-    statusPageUrlPath: ${management.context-path}/info
-    healthCheckUrlPath: ${management.context-path}/health
-    leaseRenewalIntervalInSeconds: 5
-    metadata-map:
-      instanceId: ${spring.application.name}:${random.value}
-      management.context-path: ${management.context-path}
-      user.name: ${security.user.name}
-      user.password: ${security.user.password}
-  client:
-    serviceUrl:
-      defaultZone: http://127.0.0.1:8761/eureka/
 
 spring:
   data:
     mongodb:
       host: 101.200.43.126
+      database: uaa
       authentication-database: admin
       port: 27017
       username: mongo-user
       password: mongo@sec
   datasource:
-    host: 101.200.43.126:3306
+    url: jdbc:mysql://localhost:3306/uaa?characterEncoding=utf8&useUnicode=true&useSSL=false
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver

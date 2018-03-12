@@ -1,4 +1,4 @@
-package io.github.hexagonframework.microservice.infra.uaa.domain;
+package io.github.hexagonframework.microservice.infra.uaa.domain.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -7,13 +7,27 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
+/**
+ * @author Xuegui Yuan
+ */
 @Document(collection = "users")
 public class User implements UserDetails {
-
 	@Id
+	private long id;
+
 	private String username;
 
 	private String password;
+
+	private String clientId;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	@Override
 	public String getPassword() {
@@ -23,6 +37,14 @@ public class User implements UserDetails {
 	@Override
 	public String getUsername() {
 		return username;
+	}
+
+	public String getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 info:
-  component: uaa-service
+  component: UAA Service
 spring:
   application:
     name: uaa-service

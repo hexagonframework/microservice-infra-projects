@@ -1,7 +1,8 @@
 package io.github.hexagonframework.microservice.infra.uaa.service;
 
-import io.github.hexagonframework.microservice.infra.uaa.domain.User;
-import io.github.hexagonframework.microservice.infra.uaa.repository.UserRepository;
+import io.github.hexagonframework.microservice.infra.uaa.domain.model.User;
+import io.github.hexagonframework.microservice.infra.uaa.domain.repository.UserRepository;
+import io.github.hexagonframework.microservice.infra.uaa.domain.service.SequenceService;
 import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
@@ -30,6 +31,11 @@ public class UserDetailsServiceMongo implements UserDetailsService {
 	@Autowired
 	private UserRepository repository;
 
+	private static final String USER_ID_SEQ_KEY = "user_id";
+
+	@Autowired
+	private SequenceService userIdSequenceService;
+
 	private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@Override
@@ -40,7 +46,7 @@ public class UserDetailsServiceMongo implements UserDetailsService {
 			return new org.springframework.security.core.userdetails.User(username, passwordEncoder.encode(inMemUserPassword), authorities);
 		}
 
-		User user = repository.findOne(username);
+		User user = repository.findUserByUsernameEquals(username);
 
 		if (user == null) {
 			throw new UsernameNotFoundException(username);
@@ -51,9 +57,10 @@ public class UserDetailsServiceMongo implements UserDetailsService {
 
 	public void create(User user) {
 
-		User existing = repository.findOne(user.getUsername());
+		User existing = repository.findUserByUsernameEquals(user.getUsername());
 		Assert.isNull(existing, "user already exists: " + user.getUsername());
 
+		user.setId(userIdSequenceService.getNextSequenceId(USER_ID_SEQ_KEY));
 		String hash = passwordEncoder.encode(user.getPassword());
 		user.setPassword(hash);
 

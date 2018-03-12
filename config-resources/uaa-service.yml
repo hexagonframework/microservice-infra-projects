@@ -6,3 +6,5 @@ spring:
   data:
     mongodb:
       database: uaa
+  datasource:
+    url: jdbc:mysql://${spring.datasource.host}/uaa?characterEncoding=utf8&useUnicode=true&useSSL=false

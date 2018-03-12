@@ -49,9 +49,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     http.antMatcher("/**").authorizeRequests()
         .anyRequest().permitAll();
     // for management access with basic auth
-    http.antMatcher("/management/**").authorizeRequests()
-        .antMatchers("/management/**").authenticated()
-        .and().httpBasic().realmName("Management API");
+    http.antMatcher("/actuator/**").authorizeRequests()
+        .antMatchers("/actuator/**").authenticated()
+        .and().httpBasic().realmName("Actuator API");
     // @formatter:on
   }
 }
