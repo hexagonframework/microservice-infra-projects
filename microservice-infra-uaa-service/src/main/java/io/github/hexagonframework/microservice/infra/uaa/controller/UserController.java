@@ -2,6 +2,7 @@ package io.github.hexagonframework.microservice.infra.uaa.controller;
 
 import io.github.hexagonframework.microservice.infra.uaa.domain.model.User;
 import io.github.hexagonframework.microservice.infra.uaa.service.UserDetailsServiceMongo;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +29,13 @@ public class UserController {
 	public Map<String, Object> getUser(OAuth2Authentication authentication) {
 		Map<String, Object> userInfo = new HashMap<>(6);
 		userInfo.put("clientId", authentication.getOAuth2Request().getClientId());
+		userInfo.put("scope", authentication.getOAuth2Request().getScope());
 		userInfo.put("isClientOnly", authentication.isClientOnly());
-		if (! authentication.isClientOnly()) {
+		if (authentication.isClientOnly()) {
+			userInfo.put("name", authentication.getName());
+		}else {
 			User user = (User) authentication.getUserAuthentication().getPrincipal();
-			Map<String, Object> userInfoDetail = new HashMap<>(2);
-			userInfoDetail.put("id", user.getId());
-			userInfoDetail.put("username", user.getUsername());
-			userInfo.put("user", userInfoDetail);
+			userInfo.put("id", user.getId());
 		}
 		userInfo.put("authorities", authentication.getAuthorities());
 		return userInfo;
