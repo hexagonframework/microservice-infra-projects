@@ -5,6 +5,7 @@ import io.github.hexagonframework.microservice.infra.uaa.domain.repository.UserR
 import io.github.hexagonframework.microservice.infra.uaa.domain.service.SequenceService;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,17 +56,37 @@ public class UserDetailsServiceMongo implements UserDetailsService {
 		return user;
 	}
 
-	public void create(User user) {
+	public void create(CreateUserCommand createUserCommand) {
 
-		User existing = repository.findUserByUsernameEquals(user.getUsername());
-		Assert.isNull(existing, "user already exists: " + user.getUsername());
+		User existing = repository.findUserByUsernameEquals(createUserCommand.getUsername());
+		Assert.isNull(existing, "user already exists: " + createUserCommand.getUsername());
 
+		String hash = passwordEncoder.encode(createUserCommand.getPassword());
+		createUserCommand.setPassword(hash);
+
+		User user = createUserCommand.user();
 		user.setId(userIdSequenceService.getNextSequenceId(USER_ID_SEQ_KEY));
-		String hash = passwordEncoder.encode(user.getPassword());
-		user.setPassword(hash);
 
 		repository.save(user);
 
 		log.info("new user has been created: {}", user.getUsername());
+	}
+
+	public UserDTO getUserByUsername(String username) {
+		User user = repository.findUserByUsernameEquals(username);
+		return UserDTO.from(user);
+	}
+
+	public void grantAuthorities(GrantAuthoritiesCommand grantAuthoritiesCommand) {
+		User existing = repository.findUserByUsernameEquals(grantAuthoritiesCommand.getUsername());
+		Assert.notNull(existing, "user not exists: " + grantAuthoritiesCommand.getUsername());
+		if (grantAuthoritiesCommand.getAuthorities() != null
+				&& !grantAuthoritiesCommand.getAuthorities().isEmpty()) {
+			existing.setAuthorities(grantAuthoritiesCommand.getAuthorities().stream()
+			.map(a -> new SimpleGrantedAuthority(a)).collect(Collectors.toList()));
+		} else {
+			existing.setAuthorities(Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
+		}
+		repository.save(existing);
 	}
 }
